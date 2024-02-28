@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat application</title>
+</head>
+<body>
+    <h1>Chat application</h1>
+    <h5>People Online : <span id="count-people-online">0</span></h5>
+
+    <!-- cdn link to import socket.io in client side -->
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
+    <script>
+        const countPeople = document.getElementById("count-people-online");
+        const socket = io("http://localhost:8080/",{transports : ["websocket"]});
+
+        /*handler for "welcome" events */
+        socket.on("welcome",(msg)=>{
+            console.log(msg);
+        })
+        /* hanlder for "count-people-online" */
+        socket.on("count-people-online",(count)=>{
+            countPeople.textContent = count ;
+        })
+    </script>
+</body>
+</html>
