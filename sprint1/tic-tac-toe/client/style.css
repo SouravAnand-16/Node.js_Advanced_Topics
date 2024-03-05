@@ -1,0 +1,86 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-size: 5em;
+  font-weight: 700;
+  color: rgb(143, 203, 53);
+  border: 0.5px solid black;
+}
+
+.userscont {
+  display: flex;
+  font-size: 50px;
+  justify-content: space-around;
+}
+
+#valueCont {
+  text-align: center;
+  font-size: 50px;
+}
+
+#whosTurn {
+  text-align: center;
+  font-size: 50px;
+}
+
+#input-cont {
+  text-align: center;
+  font-size: 50px;
+}
+
+#name {
+  height: 40px;
+  width: 20%;
+}
+
+::-webkit-input-placeholder {
+  font: 1.25rem/3 sans-serif;
+}
+
+#btnCont {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#find {
+  font-size: 20px;
+  padding: 10px;
+  color: white;
+  background: black;
+  border-radius: 10px;
+  border: none;
+}
+
+#loading {
+  height: 30px;
+}
+
+.btn {
+  height: 90px;
+  width: 90px;
+  background: grey;
+}
+#flex {
+  display: flex;
+  justify-content: center;
+}
+
+#cont {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 1px;
+}
+
+.btn {
+  font-size: 55px;
+  cursor: pointer;
+}

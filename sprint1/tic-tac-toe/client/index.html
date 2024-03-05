@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>tic-tac-toe</title>
+</head>
+
+<body>
+    <h1>Tic-Tac-Toe</h1>
+
+    <div class="userscont">
+        <p id="userCont">You : <span id="user"></span></p>
+        <p id="oppCont">Opponent : <span id="opp"></span></p>
+    </div>
+    <br>
+
+    <p id="valueCont">You are playing as <span id="value"></span></p>
+    <br>
+
+    <p id="whosTurn">X's Turn</p>
+
+    <div id="input-cont">
+        <p id="enterName">Enter your name:</p>
+        <input type="text" placeholder="Name" id="name">
+    </div>
+
+    <div id="btnCont">
+        <button id="find">search for player</button>
+        <img src="./images/34338d26023e5515f6cc8969aa027bca.gif" alt="loading" id="loading">
+    </div>
+    <div id="flex">
+        <div id="bigCont">
+            <div id="cont">
+                <button id="btn1" class="btn"></button>
+                <button id="btn2" class="btn"></button>
+                <button id="btn3" class="btn"></button>
+                <button id="btn4" class="btn"></button>
+                <button id="btn5" class="btn"></button>
+                <button id="btn6" class="btn"></button>
+                <button id="btn7" class="btn"></button>
+                <button id="btn8" class="btn"></button>
+                <button id="btn9" class="btn"></button>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.socket.io/4.7.4/socket.io.min.js"
+    integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
+    crossorigin="anonymous"></script>
+<script>
+
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("bigCont").style.display = "none";
+    document.getElementById("userCont").style.display = "none";
+    document.getElementById("oppCont").style.display = "none";
+    document.getElementById("valueCont").style.display = "none";
+    document.getElementById("whosTurn").style.display = "none";
+
+    const socket = io("http://localhost:4500", { transports: ['websocket'] })
+
+    let name;
+
+    document.getElementById("find").addEventListener('click', () => {
+        name = document.getElementById('name').value;
+
+        document.getElementById("user").innerHTML = name;
+
+        socket.emit("find", { name })
+
+        document.getElementById("loading").style.display = "block"
+    })
+
+    socket.on("find", (playingArray) => {
+        // let allPlayerArray = e.allPlayer
+        // console.log(typeof (playingArray));
+        // console.log(playingArray);
+
+        if (name != "") {
+            document.getElementById("userCont").style.display = "block";
+            document.getElementById("oppCont").style.display = "block";
+            document.getElementById("valueCont").style.display = "block";
+            document.getElementById("userCont").style.display = "block";
+            document.getElementById("whosTurn").style.display = "block";
+            document.getElementById("bigCont").style.display = "block";
+            document.getElementById("whosTurn").innerText = "X's Turn";
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("name").style.display = "none";
+            document.getElementById("find").style.display = "none";
+            document.getElementById("enterName").style.display = "none";
+        }
+
+        let oppName;
+        let value;
+
+        const foundObj = playingArray.find(obj => obj.p1.p1name == name || obj.p2.p2name == name)
+        // console.log(foundObj);
+        foundObj.p1.p1name == name ? oppName = foundObj.p2.p2name : oppName = foundObj.p1.p1name
+        foundObj.p1.p1name == name ? value = foundObj.p1.p1Value : value = foundObj.p2.p2Value
+
+        console.log(oppName, value);
+        document.getElementById("opp").innerHTML = oppName;
+        document.getElementById("value").innerHTML = value;
+    })
+
+    document.querySelectorAll(".btn").forEach((e) => {
+        e.addEventListener('click', () => {
+            let value = document.getElementById("value").innerText
+            e.innerText = value
+            console.log(e.id);
+            socket.emit("playing", { value, id: e.id, name })
+        })
+    })
+
+    socket.on("playing", (playingArray) => {
+        const foundObj = playingArray.find(obj => obj.p1.p1name == name || obj.p2.p2name == name)
+
+        p1Id = foundObj.p1.p1Move
+        p2Id = foundObj.p2.p2Move
+        if ((foundObj.turn) % 2 == 0) {
+            document.getElementById("whosTurn").innerHTML = "O's turn"
+        } else {
+            document.getElementById("whosTurn").innerHTML = "X's turn"
+        }
+
+        if (p1Id != '') {
+            document.getElementById(`${p1Id}`).innerHTML = "X"
+            document.getElementById(`${p1Id}`).disabled = true;
+            document.getElementById(`${p1Id}`).style.color = "black"
+        } else if (p2Id != '') {
+            document.getElementById(`${p2Id}`).innerHTML = "O"
+            document.getElementById(`${p2Id}`).disabled = true;
+            document.getElementById(`${p2Id}`).style.color = "black"
+        }
+    })
+</script>
+
+</html>
