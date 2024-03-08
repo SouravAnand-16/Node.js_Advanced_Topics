@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Trading App</title>
+</head>
+
+<body>
+    <table id="currencyTable">
+
+    </table>
+</body>
+<script src="https://cdn.socket.io/4.7.4/socket.io.min.js"
+    integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
+    crossorigin="anonymous"></script>
+<script>
+    const socket = io("http://localhost:4500/", { transports: ["websocket"] })
+
+
+    socket.on('initialData', (e) => {
+        updateCurr(e);
+    })
+
+    socket.on("updateCurr", (e) => {
+        updateCurr(e)
+    })
+
+    function buy(currName) {
+        // console.log(1);
+        obj[currName] = obj[currName] + 1
+        alert(`user buy ${currName}`)
+        socket.emit("buy", currName)
+    }
+    let obj = {
+        "US Dollar": 0, "Euro": 0, "British Pound": 0, "Japanese Yen": 0, "Canadian Dollar": 0, "Australian Dollar": 0, "Swiss Franc": 0, "Chinese Yuan": 0, "Indian Rupee": 0, "Brazilian Real": 0
+    }
+
+    function updateCurr(currencies) {
+        const table = document.getElementById('currencyTable');
+        table.innerHTML = '';
+        currencies.forEach(currency => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                    <td>${currency.name}</td>
+                    <td>${currency.value}</td>
+                    <td>${currency.symbol}</td>
+                    <td><button onclick="buy('${currency.name}')">Buy</button></td>
+                    <td>Amount owned: <span>${obj[currency.name]}</span></td> <!-- This should be dynamically updated with user's owned amount -->
+                `;
+            table.appendChild(row);
+        });
+    }
+</script>
+
+</html>
