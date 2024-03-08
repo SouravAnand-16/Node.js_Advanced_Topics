@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>signup</h1>
+    <input type="text" id="name" placeholder="enter name">
+    <input type="email" id="email" placeholder="enter email">
+    <input type="text" id="pass" placeholder="enter password">
+    <button onclick="sendOtp()">signup</button>
+    <br><br>
+    <input type="text" id="otp" placeholder="Enter OTP">
+    <button onclick="signup()">submit otp</button>
+</body>
+<script>
+    const name = document.getElementById("name");
+    const email = document.getElementById("email");
+    const pass = document.getElementById("pass");
+    const otp = document.getElementById("otp");
+    const otpBtn = document.getElementById("otpBtn");
+
+    // otp.style.display = "none";
+    // otpBtn.style.display = "none";
+
+    async function sendOtp() {
+        try {
+            const obj = {
+                username: name.value,
+                email: email.value,
+                pass: pass.value
+            }
+            const res = await fetch("http://localhost:4500/users/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(obj)
+            });
+            const data = await res.json();
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function signup() {
+        try {
+            const obj = {
+                username: name.value,
+                email: email.value,
+                pass: pass.value,
+                otp: otp.value
+            }
+            const res = await fetch("http://localhost:4500/users/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(obj)
+            });
+            const data = await res.json();
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+</script>
+
+</html>
