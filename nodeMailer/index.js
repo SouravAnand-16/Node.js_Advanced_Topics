@@ -1,19 +1,21 @@
 const express = require("express");
-const {sendEmail} = require("./emailConfig");
+const cors = require("cors");
+require("dotenv").config();
+const connection = require("./db");
+const userRouter = require("./routes/userRoute");
+
 const app = express();
 
-app.use(express.json());
+app.use(express.json(),cors());
 
 app.get("/",(req,res)=>{
     res.status(200).send(`This is a home route`);
 });
 
-app.post("/login", (req,res)=>{
-    const { email } = req.body ;
-    sendEmail(email,"sauravanand324@gmail.com","using sendEmail function","First email using node.js");
-    res.status(200).send(`Email sent`);
-});
+app.use("/user",userRouter);
 
-app.listen(8080,()=>{
+app.listen(8080,async()=>{
+    await connection ;
+    console.log(`Server got connected to db`);
     console.log(`Server is running at http://localhost:${8080}`);
 });
