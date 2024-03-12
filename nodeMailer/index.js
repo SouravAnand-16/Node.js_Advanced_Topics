@@ -1,4 +1,6 @@
+
 const express = require("express");
+const client = require("./middleware/redisClient")
 const cors = require("cors");
 require("dotenv").config();
 const connection = require("./db");
@@ -19,3 +21,4 @@ app.listen(8080,async()=>{
     console.log(`Server got connected to db`);
     console.log(`Server is running at http://localhost:${8080}`);
 });
+
